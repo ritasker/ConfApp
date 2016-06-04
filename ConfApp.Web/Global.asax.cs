@@ -13,6 +13,7 @@ namespace ConfApp.Web
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            IoCConfig.Configure();
         }
     }
 }

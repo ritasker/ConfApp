@@ -1,0 +1,19 @@
+﻿@model ConfApp.Web.Models.Conferences.ConferenceList
+
+<h2>Conferences</h2>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var conf in Model.Items)
+        {
+            <tr>
+                <td><a href="#">@conf.Name</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

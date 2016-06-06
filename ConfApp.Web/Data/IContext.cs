@@ -5,6 +5,6 @@ namespace ConfApp.Web.Data
 {
     public interface IContext
     {
-        IDbSet<Conference> Conferences { get; set; }
+        IDbSet<Conference> Conferences { get; }
     }
 }

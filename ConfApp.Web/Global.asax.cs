@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
+using FluentValidation;
+using FluentValidation.Mvc;
 
 namespace ConfApp.Web
 {
@@ -11,9 +9,11 @@ namespace ConfApp.Web
     {
         protected void Application_Start()
         {
+            var container = IoCConfig.Configure();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            IoCConfig.Configure();
+            FluentValidationModelValidatorProvider.Configure(provider => 
+            provider.ValidatorFactory = container.GetInstance<IValidatorFactory>());
         }
     }
 }

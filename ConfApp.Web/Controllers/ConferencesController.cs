@@ -1,7 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ConfApp.Web.Data;
+using ConfApp.Web.Data.Models;
 using ConfApp.Web.Models.Conferences;
+using FluentValidation;
 
 namespace ConfApp.Web.Controllers
 {
@@ -23,5 +26,33 @@ namespace ConfApp.Web.Controllers
 
             return View(new ConferenceList { Items = conferences });
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(CreateConference model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var conference = new Conference
+            {
+                Name = model.Name,
+                Description = model.Description,
+                StartDate = model.StartDate.Value,
+                EndDate = model.EndDate.Value
+            };
+
+            _dataContext.Conferences.Add(conference);
+            await _dataContext.SaveChangesAsync();
+
+            return RedirectToAction("");
+        }
+
     }
 }

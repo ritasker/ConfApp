@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using ConfApp.Web.Data;
-using ConfApp.Web.Data.Models;
 using ConfApp.Web.Models.Conferences;
-using FluentValidation;
 
 namespace ConfApp.Web.Controllers
 {
+    using Domain;
+    using Domain.Models;
+
     public class ConferencesController : Controller
     {
         private readonly IContext _dataContext;

@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Web.Mvc;
-using ConfApp.Web.Data;
 using ConfApp.Web.Models.Conferences;
 using FluentValidation;
 using SimpleInjector;
@@ -9,6 +8,9 @@ using SimpleInjector.Integration.Web.Mvc;
 
 namespace ConfApp.Web
 {
+    using Data;
+    using Domain;
+
     public static class IoCConfig
     {
         public static Container Configure()

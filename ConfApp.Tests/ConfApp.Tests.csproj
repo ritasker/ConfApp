@@ -119,6 +119,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConfApp.Domain\ConfApp.Domain.csproj">
+      <Project>{D414014E-22B3-4BFA-A419-23656679FADE}</Project>
+      <Name>ConfApp.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConfApp.Web\ConfApp.Web.csproj">
       <Project>{1be69d09-9b3a-48e7-b112-015d448f97f0}</Project>
       <Name>ConfApp.Web</Name>

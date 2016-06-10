@@ -3,8 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using ConfApp.Tests.Stubs;
 using ConfApp.Web.Controllers;
-using ConfApp.Web.Data;
-using ConfApp.Web.Data.Models;
 using ConfApp.Web.Models.Conferences;
 using FakeItEasy;
 using FluentAssertions;
@@ -12,6 +10,9 @@ using Xunit;
 
 namespace ConfApp.Tests.Controller
 {
+    using Domain;
+    using Domain.Models;
+
     public class ConferencesControllerTests
     {
         [Fact]

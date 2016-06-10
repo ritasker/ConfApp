@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-
-namespace ConfApp.Web.Controllers
+﻿namespace ConfApp.Web.Controllers
 {
+    using System.Web.Mvc;
+
     public class HomeController : Controller
     {
         public ActionResult Index()

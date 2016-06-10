@@ -1,8 +1,8 @@
-﻿using System;
-using FluentValidation;
-
-namespace ConfApp.Web.Models.Conferences
+﻿namespace ConfApp.Web.Models.Conferences
 {
+    using System;
+    using FluentValidation;
+
     public class CreateConference
     {
         public string Name { get; set; }

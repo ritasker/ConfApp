@@ -1,32 +1,31 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using ConfApp.Web.Models.Conferences;
-
-namespace ConfApp.Web.Controllers
+﻿namespace ConfApp.Web.Controllers
 {
-    using Domain;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web.Mvc;
+    using Domain.Data;
     using Domain.Models;
+    using Models.Conferences;
 
     public class ConferencesController : Controller
     {
-        private readonly IContext _dataContext;
+        private readonly IConferenceRepository _repository;
 
-        public ConferencesController(IContext dataContext)
+        public ConferencesController(IConferenceRepository repository)
         {
-            _dataContext = dataContext;
+            _repository = repository;
         }
 
         public ActionResult Index()
         {
-            var conferences = _dataContext
-                .Conferences
+            var conferences = _repository.Query()
                 .Select(c => new ConferenceSummary {Id = c.Id, Name = c.Name})
                 .ToList();
 
-            return View(new ConferenceList { Items = conferences });
+            return View(new ConferenceList {Items = conferences});
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -48,11 +47,9 @@ namespace ConfApp.Web.Controllers
                 EndDate = model.EndDate.Value
             };
 
-            _dataContext.Conferences.Add(conference);
-            await _dataContext.SaveChangesAsync();
+            _repository.Save(conference);
 
             return RedirectToAction("");
         }
-
     }
 }

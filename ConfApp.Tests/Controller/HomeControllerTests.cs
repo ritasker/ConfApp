@@ -1,9 +1,9 @@
-﻿using ConfApp.Web.Controllers;
-using Xunit;
-using FluentAssertions;
-
-namespace ConfApp.Tests.Controller
+﻿namespace ConfApp.Tests.Controller
 {
+    using FluentAssertions;
+    using Web.Controllers;
+    using Xunit;
+
     public class HomeControllerTests
     {
         [Fact]

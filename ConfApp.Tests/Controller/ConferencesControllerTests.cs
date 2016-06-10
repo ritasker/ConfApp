@@ -1,20 +1,62 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using ConfApp.Tests.Stubs;
-using ConfApp.Web.Controllers;
-using ConfApp.Web.Models.Conferences;
-using FakeItEasy;
-using FluentAssertions;
-using Xunit;
-
-namespace ConfApp.Tests.Controller
+﻿namespace ConfApp.Tests.Controller
 {
-    using Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Domain.Data;
     using Domain.Models;
+    using FakeItEasy;
+    using Faker;
+    using FluentAssertions;
+    using Web.Controllers;
+    using Web.Models.Conferences;
+    using Xunit;
 
     public class ConferencesControllerTests
     {
+        [Fact]
+        public void Create_ShouldReturnAViewIfTheModelIsInvalid()
+        {
+            // ARRANGE
+            var model = new CreateConference();
+            var repository = A.Fake<IConferenceRepository>();
+            var subject = new ConferencesController(repository);
+            subject.ModelState.AddModelError("aProp", "Something is wrong");
+
+            // ACT
+            var result = subject.Create(model).GetAwaiter().GetResult();
+
+            // ASSERT
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void Create_ShouldSaveTheConference()
+        {
+            // ARRANGE
+            var model = new CreateConference
+            {
+                Name = Lorem.GetFirstWord(),
+                Description = Lorem.Sentence(),
+                StartDate = DateTime.UtcNow.AddDays(3),
+                EndDate = DateTime.UtcNow.AddDays(6)
+            };
+
+            var repository = A.Fake<IConferenceRepository>();
+            var subject = new ConferencesController(repository);
+
+            // ACT
+            var result = subject.Create(model).GetAwaiter().GetResult();
+
+            // ASSERT
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectToRouteResult>();
+        }
+
         [Fact]
         public void Index_ShouldReturnAListOfConferences()
         {
@@ -25,7 +67,7 @@ namespace ConfApp.Tests.Controller
                 Name = "DevConf"
             };
 
-            var mockData = new FakeDbSet<Conference>
+            var mockData = new List<Conference>
             {
                 new Conference
                 {
@@ -34,10 +76,10 @@ namespace ConfApp.Tests.Controller
                 }
             };
 
-            var context = A.Fake<IContext>();
-            A.CallTo(() => context.Conferences).Returns(mockData);
+            var repository = A.Fake<IConferenceRepository>();
+            A.CallTo(() => repository.Query()).Returns(mockData.AsQueryable());
 
-            var subject = new ConferencesController(context);
+            var subject = new ConferencesController(repository);
 
             // ACT
             var result = subject.Index();
@@ -49,48 +91,6 @@ namespace ConfApp.Tests.Controller
             var model = result.As<ViewResult>().Model as ConferenceList;
             model.Items.Should().NotBeEmpty();
             model.Items.Any(x => x.Id == expectedConference.Id).Should().BeTrue();
-        }
-
-        [Fact]
-        public void Create_ShouldSaveTheConference()
-        {
-            // ARRANGE
-            var model = new CreateConference
-            {
-                Name = Faker.Lorem.GetFirstWord(),
-                Description = Faker.Lorem.Sentence(),
-                StartDate = DateTime.UtcNow.AddDays(3),
-                EndDate = DateTime.UtcNow.AddDays(6)
-            };
-
-            var context = A.Fake<IContext>();
-            var subject = new ConferencesController(context);
-
-            // ACT
-            var result = subject.Create(model).GetAwaiter().GetResult();
-
-            // ASSERT
-            A.CallTo(() => context.SaveChangesAsync()).MustHaveHappened(Repeated.Exactly.Once);
-            result.Should().NotBeNull();
-            result.Should().BeOfType<RedirectToRouteResult>();
-        }
-
-        [Fact]
-        public void Create_ShouldReturnAViewIfTheModelIsInvalid()
-        {
-            // ARRANGE
-            var model = new CreateConference();
-            var context = A.Fake<IContext>();
-            var subject = new ConferencesController(context);
-            subject.ModelState.AddModelError("aProp", "Something is wrong");
-
-            // ACT
-            var result = subject.Create(model).GetAwaiter().GetResult();
-
-            // ASSERT
-            A.CallTo(() => context.SaveChangesAsync()).MustHaveHappened(Repeated.Never);
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
         }
     }
 }

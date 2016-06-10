@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace ConfApp.Web.Models.Conferences
+﻿namespace ConfApp.Web.Models.Conferences
 {
+    using System;
+
     public class ConferenceSummary
     {
         public Guid Id { get; set; }

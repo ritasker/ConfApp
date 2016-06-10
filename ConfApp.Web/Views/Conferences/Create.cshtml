@@ -4,30 +4,30 @@
 @using (Html.BeginForm())
 {
     <div class="form-group">
-        @Html.LabelFor(x => x.Name, new { @class = "control-label" })
+        @Html.LabelFor(x => x.Name, new {@class = "control-label"})
         @Html.TextBoxFor(x => x.Name, new {@class = "form-control", placeholder = "Name..."})
         @Html.ValidationMessageFor(x => x.Name)
     </div>
     <div class="form-group">
-        @Html.LabelFor(x => x.Description, new { @class = "control-label" })
-        @Html.TextBoxFor(x => x.Description, new {@class = "form-control", placeholder = "Description..."}) 
+        @Html.LabelFor(x => x.Description, new {@class = "control-label"})
+        @Html.TextBoxFor(x => x.Description, new {@class = "form-control", placeholder = "Description..."})
         @Html.ValidationMessageFor(x => x.Description)
     </div>
     <div class="form-group">
-        @Html.LabelFor(x => x.StartDate,"Start Date", new { @class = "control-label" })
+        @Html.LabelFor(x => x.StartDate, "Start Date", new {@class = "control-label"})
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-            @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.StartDate, new {@class = "form-control"})
         </div>
         @Html.ValidationMessageFor(x => x.StartDate)
     </div>
     <div class="form-group">
-        @Html.LabelFor(x => x.EndDate, "End Date", new { @class = "control-label" })
+        @Html.LabelFor(x => x.EndDate, "End Date", new {@class = "control-label"})
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             @Html.TextBoxFor(x => x.EndDate, new {@class = "form-control"})
         </div>
         @Html.ValidationMessageFor(x => x.EndDate)
     </div>
-    <button class="btn btn-primary"  type="submit" >Submit</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
 }

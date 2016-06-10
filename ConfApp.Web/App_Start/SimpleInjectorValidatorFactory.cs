@@ -1,9 +1,9 @@
-﻿using System;
-using FluentValidation;
-using SimpleInjector;
-
-namespace ConfApp.Web
+﻿namespace ConfApp.Web
 {
+    using System;
+    using FluentValidation;
+    using SimpleInjector;
+
     public class SimpleInjectorValidatorFactory : ValidatorFactoryBase
     {
         private readonly Container _container;

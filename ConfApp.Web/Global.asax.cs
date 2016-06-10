@@ -1,19 +1,20 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using FluentValidation;
-using FluentValidation.Mvc;
-
-namespace ConfApp.Web
+﻿namespace ConfApp.Web
 {
-    public class MvcApplication : System.Web.HttpApplication
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using FluentValidation;
+    using FluentValidation.Mvc;
+
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
             var container = IoCConfig.Configure();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            FluentValidationModelValidatorProvider.Configure(provider => 
-            provider.ValidatorFactory = container.GetInstance<IValidatorFactory>());
+            FluentValidationModelValidatorProvider.Configure(provider =>
+                provider.ValidatorFactory = container.GetInstance<IValidatorFactory>());
         }
     }
 }

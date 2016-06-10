@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Linq;
-
-namespace ConfApp.Tests.Stubs
+﻿namespace ConfApp.Tests.Stubs
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     public class FakeDbSet<T> : IDbSet<T> where T : class
     {
-        HashSet<T> _data;
-        IQueryable _query;
+        private readonly HashSet<T> _data;
+        private readonly IQueryable _query;
 
         public FakeDbSet()
         {
@@ -19,14 +21,15 @@ namespace ConfApp.Tests.Stubs
 
         Type IQueryable.ElementType => _query.ElementType;
 
-        System.Linq.Expressions.Expression IQueryable.Expression => _query.Expression;
+        Expression IQueryable.Expression => _query.Expression;
 
         IQueryProvider IQueryable.Provider => _query.Provider;
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _data.GetEnumerator();
         }
+
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return _data.GetEnumerator();
@@ -66,7 +69,5 @@ namespace ConfApp.Tests.Stubs
         }
 
         public ObservableCollection<T> Local { get; }
-
-        
     }
 }

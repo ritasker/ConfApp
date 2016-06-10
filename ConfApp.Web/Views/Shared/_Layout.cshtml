@@ -8,22 +8,22 @@
 
     <!-- Bootstrap core CSS -->
     <link href=@Url.Content("~/Content/bootstrap.min.css") rel="stylesheet"/>
-    <link href=@Url.Content("~/Content/site.css") rel="stylesheet" />
+    <link href=@Url.Content("~/Content/site.css") rel="stylesheet"/>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Project name</a>
-            </div>
-            @RenderPage("_navigation.cshtml")
-        </div>
-    </nav>
-
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        @RenderBody()
-    </div><!-- /.container -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        @RenderPage("_navigation.cshtml")
+    </div>
+</nav>
+
+<div class="container">
+    @RenderBody()
+</div><!-- /.container -->
 </body>
 </html>

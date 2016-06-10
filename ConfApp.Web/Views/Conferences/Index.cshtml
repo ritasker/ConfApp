@@ -9,11 +9,13 @@
     </tr>
     </thead>
     <tbody>
-        @foreach (var conf in Model.Items)
-        {
-            <tr>
-                <td><a href="#">@conf.Name</a></td>
-            </tr>
-        }
+    @foreach (var conf in Model.Items)
+    {
+        <tr>
+            <td>
+                <a href="#">@conf.Name</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

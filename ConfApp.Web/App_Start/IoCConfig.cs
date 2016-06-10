@@ -1,15 +1,14 @@
-﻿using System.Reflection;
-using System.Web.Mvc;
-using ConfApp.Web.Models.Conferences;
-using FluentValidation;
-using SimpleInjector;
-using SimpleInjector.Integration.Web;
-using SimpleInjector.Integration.Web.Mvc;
-
-namespace ConfApp.Web
+﻿namespace ConfApp.Web
 {
+    using System.Reflection;
+    using System.Web.Mvc;
     using Data;
     using Domain;
+    using FluentValidation;
+    using Models.Conferences;
+    using SimpleInjector;
+    using SimpleInjector.Integration.Web;
+    using SimpleInjector.Integration.Web.Mvc;
 
     public static class IoCConfig
     {
@@ -22,7 +21,7 @@ namespace ConfApp.Web
 
             container.Register<IValidator<CreateConference>, CreateConferenceValidator>();
             container.Register<IValidatorFactory, SimpleInjectorValidatorFactory>();
-            
+
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
             container.RegisterMvcIntegratedFilterProvider();

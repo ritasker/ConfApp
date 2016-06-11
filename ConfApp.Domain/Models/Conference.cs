@@ -2,9 +2,8 @@ namespace ConfApp.Domain.Models
 {
     using System;
 
-    public class Conference
+    public class Conference : Entity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }

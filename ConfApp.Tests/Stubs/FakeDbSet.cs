@@ -1,4 +1,6 @@
-﻿namespace ConfApp.Tests.Stubs
+﻿using ConfApp.Domain.Models;
+
+namespace ConfApp.Tests.Stubs
 {
     using System;
     using System.Collections;
@@ -8,7 +10,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public class FakeDbSet<T> : IDbSet<T> where T : class
+    public class FakeDbSet<T> : IDbSet<T> where T : Entity
     {
         private readonly HashSet<T> _data;
         private readonly IQueryable _query;
@@ -40,15 +42,19 @@
             throw new NotImplementedException("Derive from FakeDbSet<T> and override Find");
         }
 
-        public T Add(T entity)
+        public T Add(T entity) 
         {
+            entity.Id = Guid.NewGuid();
             _data.Add(entity);
+
             return entity;
         }
 
         public T Attach(T entity)
         {
+            entity.Id = Guid.NewGuid();
             _data.Add(entity);
+
             return entity;
         }
 

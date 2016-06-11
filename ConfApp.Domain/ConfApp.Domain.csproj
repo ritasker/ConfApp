@@ -52,6 +52,7 @@
     <Compile Include="Data\IConferenceRepository.cs" />
     <Compile Include="IContext.cs" />
     <Compile Include="Models\Conference.cs" />
+    <Compile Include="Models\Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

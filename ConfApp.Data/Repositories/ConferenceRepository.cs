@@ -1,4 +1,6 @@
-﻿namespace ConfApp.Data.Repositories
+﻿using ConfApp.Domain;
+
+namespace ConfApp.Data.Repositories
 {
     using System.Linq;
     using Domain.Data;
@@ -6,14 +8,24 @@
 
     public class ConferenceRepository : IConferenceRepository
     {
+        private readonly IContext _context;
+
+        public ConferenceRepository(IContext context)
+        {
+            _context = context;
+        }
+
         public IQueryable<Conference> Query()
         {
-            throw new System.NotImplementedException();
+            return _context.Conferences;
         }
 
         public Conference Save(Conference conference)
         {
-            throw new System.NotImplementedException();
+            _context.Conferences.Add(conference);
+            _context.SaveChangesAsync().Wait();
+
+            return conference;
         }
     }
 }

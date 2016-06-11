@@ -1,4 +1,5 @@
-﻿using ConfApp.Domain;
+﻿using System;
+using ConfApp.Domain;
 
 namespace ConfApp.Data.Repositories
 {
@@ -20,8 +21,14 @@ namespace ConfApp.Data.Repositories
             return _context.Conferences;
         }
 
+        public Conference FindById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Conference Save(Conference conference)
         {
+            conference.Id = Guid.NewGuid();
             _context.Conferences.Add(conference);
             _context.SaveChangesAsync().Wait();
 

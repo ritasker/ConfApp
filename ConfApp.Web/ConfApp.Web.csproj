@@ -149,6 +149,7 @@
     <Compile Include="Models\Conferences\ConferenceSummary.cs" />
     <Compile Include="Models\Conferences\ConferenceList.cs" />
     <Compile Include="Models\Conferences\CreateConference.cs" />
+    <Compile Include="Models\Conferences\EditConference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Views\Conferences\Create.cshtml" />
+    <None Include="Views\Conferences\Edit.cshtml" />
     <None Include="Views\Conferences\Index.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

@@ -16,48 +16,6 @@
     public class ConferencesControllerTests
     {
         [Fact]
-        public void Create_ShouldReturnAViewIfTheModelIsInvalid()
-        {
-            // ARRANGE
-            var model = new CreateConference();
-            var repository = A.Fake<IConferenceRepository>();
-            var subject = new ConferencesController(repository);
-            subject.ModelState.AddModelError("aProp", "Something is wrong");
-
-            // ACT
-            var result = subject.Create(model).GetAwaiter().GetResult();
-
-            // ASSERT
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-        }
-
-        [Fact]
-        public void Create_ShouldSaveTheConference()
-        {
-            // ARRANGE
-            var model = new CreateConference
-            {
-                Name = Lorem.GetFirstWord(),
-                Description = Lorem.Sentence(),
-                StartDate = DateTime.UtcNow.AddDays(3),
-                EndDate = DateTime.UtcNow.AddDays(6)
-            };
-
-            var repository = A.Fake<IConferenceRepository>();
-            var subject = new ConferencesController(repository);
-
-            // ACT
-            var result = subject.Create(model).GetAwaiter().GetResult();
-
-            // ASSERT
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
-            result.Should().NotBeNull();
-            result.Should().BeOfType<RedirectToRouteResult>();
-        }
-
-        [Fact]
         public void Index_ShouldReturnAListOfConferences()
         {
             // ARRANGE
@@ -91,6 +49,95 @@
             var model = result.As<ViewResult>().Model as ConferenceList;
             model.Items.Should().NotBeEmpty();
             model.Items.Any(x => x.Id == expectedConference.Id).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Create_ShouldReturnAView()
+        {
+            // ARRANGE
+            var subject = new ConferencesController(null);
+
+            // ACT
+            var result = subject.Create();
+
+            // ASSERT
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void Create_ShouldReturnAViewIfTheModelIsInvalid()
+        {
+            // ARRANGE
+            var model = new CreateConference();
+            var repository = A.Fake<IConferenceRepository>();
+            var subject = new ConferencesController(repository);
+            subject.ModelState.AddModelError("aProp", "Something is wrong");
+
+            // ACT
+            var result = subject.Create(model);
+
+            // ASSERT
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void Create_ShouldSaveTheConference()
+        {
+            // ARRANGE
+            var model = new CreateConference
+            {
+                Name = Lorem.GetFirstWord(),
+                Description = Lorem.Sentence(),
+                StartDate = DateTime.UtcNow.AddDays(3),
+                EndDate = DateTime.UtcNow.AddDays(6)
+            };
+
+            var repository = A.Fake<IConferenceRepository>();
+            var subject = new ConferencesController(repository);
+
+            // ACT
+            var result = subject.Create(model);
+
+            // ASSERT
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectToRouteResult>();
+        }
+
+        [Fact]
+        public void Edit_ShouldReturnAView()
+        {
+            var conferenceId = Guid.NewGuid();
+
+            Conference conference = new Conference
+            {
+                Id = conferenceId,
+                Name = Lorem.GetFirstWord(),
+                Description = Lorem.Sentence(),
+                StartDate = DateTime.UtcNow.AddDays(3),
+                EndDate = DateTime.UtcNow.AddDays(6)
+            };
+
+            var repository = A.Fake<IConferenceRepository>();
+            A.CallTo(() => repository.FindById(conferenceId)).Returns(conference);
+
+            var subject = new ConferencesController(repository);
+
+            var result = subject.Edit(conferenceId);
+
+            A.CallTo(() => repository.FindById(conferenceId)).MustHaveHappened(Repeated.Exactly.Once);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+
+            var viewResult = result as ViewResult;
+            viewResult.Model.Should().BeOfType(typeof(EditConference));
+
+            var model = viewResult.Model as EditConference;
+            model.Id.Should().Be(conferenceId);
         }
     }
 }

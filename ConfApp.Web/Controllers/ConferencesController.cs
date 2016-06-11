@@ -1,4 +1,6 @@
-﻿namespace ConfApp.Web.Controllers
+﻿using System;
+
+namespace ConfApp.Web.Controllers
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -32,7 +34,7 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateConference model)
+        public ActionResult Create(CreateConference model)
         {
             if (!ModelState.IsValid)
             {
@@ -50,6 +52,22 @@
             _repository.Save(conference);
 
             return RedirectToAction("");
+        }
+
+        public ActionResult Edit(Guid id)
+        {
+            var conference = _repository.FindById(id);
+
+            var model = new EditConference
+            {
+                Id = conference.Id,
+                Name = conference.Name,
+                Description = conference.Description,
+                StartDate = conference.StartDate,
+                EndDate = conference.EndDate
+            };
+
+            return View(model);
         }
     }
 }

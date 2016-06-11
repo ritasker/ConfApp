@@ -1,4 +1,7 @@
-﻿namespace ConfApp.Web
+﻿using ConfApp.Data.Repositories;
+using ConfApp.Domain.Data;
+
+namespace ConfApp.Web
 {
     using System.Reflection;
     using System.Web.Mvc;
@@ -17,8 +20,11 @@
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
-            container.Register<IContext, ApplicationContext>(Lifestyle.Scoped);
+            // Repositories and Data Access Registrations
+            container.Register<IContext, ApplicationContext>(Lifestyle.Singleton);
+            container.Register<IConferenceRepository, ConferenceRepository>();
 
+            // Model Validations Registrations
             container.Register<IValidator<CreateConference>, CreateConferenceValidator>();
             container.Register<IValidatorFactory, SimpleInjectorValidatorFactory>();
 

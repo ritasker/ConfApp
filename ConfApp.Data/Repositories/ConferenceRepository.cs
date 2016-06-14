@@ -1,5 +1,6 @@
 ﻿using System;
 using ConfApp.Domain;
+using ConfApp.Domain.Exceptions;
 
 namespace ConfApp.Data.Repositories
 {
@@ -23,7 +24,16 @@ namespace ConfApp.Data.Repositories
 
         public Conference FindById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _context
+                .Conferences
+                .First(x => x.Id == id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new EntityNotFoundException(nameof(Conference), id.ToString(), ex);
+            }
         }
 
         public Conference Save(Conference conference)

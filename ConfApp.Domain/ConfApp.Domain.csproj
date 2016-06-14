@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\IConferenceRepository.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="IContext.cs" />
     <Compile Include="Models\Conference.cs" />
     <Compile Include="Models\Entity.cs" />

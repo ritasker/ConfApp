@@ -1,12 +1,12 @@
-﻿using ConfApp.Data.Repositories;
+﻿using ConfApp.Data;
+using ConfApp.Data.Repositories;
+using ConfApp.Domain;
 using ConfApp.Domain.Data;
 
 namespace ConfApp.Web
 {
     using System.Reflection;
     using System.Web.Mvc;
-    using Data;
-    using Domain;
     using FluentValidation;
     using Models.Conferences;
     using SimpleInjector;

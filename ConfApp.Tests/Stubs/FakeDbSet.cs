@@ -44,7 +44,11 @@ namespace ConfApp.Tests.Stubs
 
         public T Add(T entity) 
         {
-            entity.Id = Guid.NewGuid();
+            if (entity.Id == null || entity.Id == Guid.Empty)
+            {
+                entity.Id = Guid.NewGuid();
+            }
+            
             _data.Add(entity);
 
             return entity;

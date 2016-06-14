@@ -1,4 +1,6 @@
-﻿namespace ConfApp.Tests.Controller
+﻿using ConfApp.Domain.Exceptions;
+
+namespace ConfApp.Tests.Controller
 {
     using System;
     using System.Collections.Generic;
@@ -138,6 +140,38 @@
 
             var model = viewResult.Model as EditConference;
             model.Id.Should().Be(conferenceId);
+        }
+
+        [Fact]
+        public void Edit_ShouldReturnA404()
+        {
+            var conferenceId = Guid.NewGuid();
+
+            Conference conference = new Conference
+            {
+                Id = conferenceId,
+                Name = Lorem.GetFirstWord(),
+                Description = Lorem.Sentence(),
+                StartDate = DateTime.UtcNow.AddDays(3),
+                EndDate = DateTime.UtcNow.AddDays(6)
+            };
+
+            var entityNotFoundException = new EntityNotFoundException(nameof(conference), conferenceId.ToString());
+
+            var repository = A.Fake<IConferenceRepository>();
+            A.CallTo(() => repository.FindById(conferenceId)).Throws(entityNotFoundException);
+
+            var subject = new ConferencesController(repository);
+
+            var result = subject.Edit(conferenceId);
+
+            A.CallTo(() => repository.FindById(conferenceId)).MustHaveHappened(Repeated.Exactly.Once);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<HttpNotFoundResult>();
+
+            var notFoundResult = result as HttpNotFoundResult;
+            notFoundResult.StatusDescription.Should().Be(entityNotFoundException.Message);
         }
     }
 }

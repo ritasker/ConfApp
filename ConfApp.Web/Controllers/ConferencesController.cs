@@ -1,4 +1,5 @@
 ﻿using System;
+using ConfApp.Domain.Exceptions;
 
 namespace ConfApp.Web.Controllers
 {
@@ -54,20 +55,28 @@ namespace ConfApp.Web.Controllers
             return RedirectToAction("");
         }
 
+        [HttpGet]
         public ActionResult Edit(Guid id)
         {
-            var conference = _repository.FindById(id);
-
-            var model = new EditConference
+            try
             {
-                Id = conference.Id,
-                Name = conference.Name,
-                Description = conference.Description,
-                StartDate = conference.StartDate,
-                EndDate = conference.EndDate
-            };
+                var conference = _repository.FindById(id);
 
-            return View(model);
+                var model = new EditConference
+                {
+                    Id = conference.Id,
+                    Name = conference.Name,
+                    Description = conference.Description,
+                    StartDate = conference.StartDate,
+                    EndDate = conference.EndDate
+                };
+
+                return View(model);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return new HttpNotFoundResult(ex.Message);
+            }
         }
     }
 }

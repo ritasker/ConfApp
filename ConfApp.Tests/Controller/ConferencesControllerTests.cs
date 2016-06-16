@@ -173,5 +173,50 @@ namespace ConfApp.Tests.Controller
             var notFoundResult = result as HttpNotFoundResult;
             notFoundResult.StatusDescription.Should().Be(entityNotFoundException.Message);
         }
+
+        [Fact]
+        public void Edit_ShouldReturnAViewIfTheModelIsInvalid()
+        {
+            // ARRANGE
+            var model = new EditConference();
+            var repository = A.Fake<IConferenceRepository>();
+            var subject = new ConferencesController(repository);
+            subject.ModelState.AddModelError("aProp", "Something is wrong");
+
+            // ACT
+            var result = subject.Edit(model);
+
+            // ASSERT
+            A.CallTo(() => repository.FindById(model.Id)).MustHaveHappened(Repeated.Never);
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void Edit_ShouldSaveTheConference()
+        {
+            // ARRANGE
+            var model = new EditConference
+            {
+                Id = Guid.NewGuid(),
+                Name = Lorem.GetFirstWord(),
+                Description = Lorem.Sentence(),
+                StartDate = DateTime.UtcNow.AddDays(3),
+                EndDate = DateTime.UtcNow.AddDays(6)
+            };
+
+            var repository = A.Fake<IConferenceRepository>();
+            var subject = new ConferencesController(repository);
+
+            // ACT
+            var result = subject.Edit(model);
+
+            // ASSERT
+            A.CallTo(() => repository.FindById(model.Id)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectToRouteResult>();
+        }
     }
 }

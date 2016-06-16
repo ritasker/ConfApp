@@ -26,6 +26,7 @@ namespace ConfApp.Web
 
             // Model Validations Registrations
             container.Register<IValidator<CreateConference>, CreateConferenceValidator>();
+            container.Register<IValidator<EditConference>, EditConferenceValidator>();
             container.Register<IValidatorFactory, SimpleInjectorValidatorFactory>();
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());

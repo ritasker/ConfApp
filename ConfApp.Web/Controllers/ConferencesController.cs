@@ -1,14 +1,12 @@
-﻿using System;
-using ConfApp.Domain.Exceptions;
-
-namespace ConfApp.Web.Controllers
+﻿namespace ConfApp.Web.Controllers
 {
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Web.Mvc;
     using Domain.Data;
     using Domain.Models;
     using Models.Conferences;
+    using System;
+    using Domain.Exceptions;
 
     public class ConferencesController : Controller
     {
@@ -37,22 +35,22 @@ namespace ConfApp.Web.Controllers
         [HttpPost]
         public ActionResult Create(CreateConference model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                var conference = new Conference
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    StartDate = model.StartDate.Value,
+                    EndDate = model.EndDate.Value
+                };
+
+                _repository.Save(conference);
+
+                return RedirectToAction("");
             }
 
-            var conference = new Conference
-            {
-                Name = model.Name,
-                Description = model.Description,
-                StartDate = model.StartDate.Value,
-                EndDate = model.EndDate.Value
-            };
-
-            _repository.Save(conference);
-
-            return RedirectToAction("");
+            return View(model);
         }
 
         [HttpGet]
@@ -77,6 +75,25 @@ namespace ConfApp.Web.Controllers
             {
                 return new HttpNotFoundResult(ex.Message);
             }
+        }
+
+        public ActionResult Edit(EditConference model)
+        {
+            if (ModelState.IsValid)
+            {
+                var conference = _repository.FindById(model.Id);
+
+                conference.Name = model.Name;
+                conference.Description = model.Description;
+                conference.StartDate = model.StartDate.Value;
+                conference.EndDate = model.EndDate.Value;
+
+                _repository.Save(conference);
+
+                return RedirectToAction("");
+            }
+
+            return View(model);
         }
     }
 }

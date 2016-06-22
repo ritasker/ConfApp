@@ -17,6 +17,7 @@
             _repository = repository;
         }
 
+        [HttpGet]
         public ActionResult Index()
         {
             var conferences = _repository.Query()
@@ -45,9 +46,9 @@
                     EndDate = model.EndDate.Value
                 };
 
-                _repository.Save(conference);
+                conference = _repository.Save(conference);
 
-                return RedirectToAction("");
+                return RedirectToAction("Details", new {conference.Id });
             }
 
             return View(model);
@@ -77,6 +78,7 @@
             }
         }
 
+        [HttpPost]
         public ActionResult Edit(EditConference model)
         {
             if (ModelState.IsValid)
@@ -90,10 +92,34 @@
 
                 _repository.Save(conference);
 
-                return RedirectToAction("");
+                return RedirectToAction("Details", new {model.Id});
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Details(Guid id)
+        {
+            try
+            {
+                var conference = _repository.FindById(id);
+
+                var model = new ConferenceViewModel
+                {
+                    Id = conference.Id,
+                    Name = conference.Name,
+                    Description = conference.Description,
+                    StartDate = conference.StartDate,
+                    EndDate = conference.EndDate
+                };
+
+                return View(model);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return new HttpNotFoundResult(ex.Message);
+            }
         }
     }
 }

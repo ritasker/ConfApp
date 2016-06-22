@@ -46,6 +46,7 @@ namespace ConfApp.Tests.Controller
 
             // ASSERT
             result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
             result.As<ViewResult>().Model.Should().BeOfType(typeof(ConferenceList));
 
             var model = result.As<ViewResult>().Model as ConferenceList;
@@ -97,7 +98,18 @@ namespace ConfApp.Tests.Controller
                 EndDate = DateTime.UtcNow.AddDays(6)
             };
 
+            var conference = new Conference
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Name,
+                Description = model.Description,
+                StartDate = model.StartDate.Value,
+                EndDate = model.EndDate.Value
+            };
+
             var repository = A.Fake<IConferenceRepository>();
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).Returns(conference);
+
             var subject = new ConferencesController(repository);
 
             // ACT
@@ -107,6 +119,7 @@ namespace ConfApp.Tests.Controller
             A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectToRouteResult>();
+            result.As<RedirectToRouteResult>().RouteValues["id"].Should().Be(conference.Id);
         }
 
         [Fact]
@@ -146,17 +159,7 @@ namespace ConfApp.Tests.Controller
         public void Edit_ShouldReturnA404()
         {
             var conferenceId = Guid.NewGuid();
-
-            Conference conference = new Conference
-            {
-                Id = conferenceId,
-                Name = Lorem.GetFirstWord(),
-                Description = Lorem.Sentence(),
-                StartDate = DateTime.UtcNow.AddDays(3),
-                EndDate = DateTime.UtcNow.AddDays(6)
-            };
-
-            var entityNotFoundException = new EntityNotFoundException(nameof(conference), conferenceId.ToString());
+            var entityNotFoundException = new EntityNotFoundException(nameof(Conference), conferenceId.ToString());
 
             var repository = A.Fake<IConferenceRepository>();
             A.CallTo(() => repository.FindById(conferenceId)).Throws(entityNotFoundException);
@@ -217,6 +220,58 @@ namespace ConfApp.Tests.Controller
             A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectToRouteResult>();
+
+            result.As<RedirectToRouteResult>().RouteValues["id"].Should().Be(model.Id);
+        }
+
+        [Fact]
+        public void Details_ShouldReturnAConference()
+        {
+            var id = Guid.NewGuid();
+            var conference = new Conference
+            {
+                Id = id,
+                Name = Lorem.GetFirstWord(),
+                Description = Lorem.Sentence(5),
+                StartDate = DateTime.UtcNow.AddDays(3),
+                EndDate = DateTime.UtcNow.AddDays(6)
+            };
+
+            var repository = A.Fake<IConferenceRepository>();
+            A.CallTo(() => repository.FindById(id)).Returns(conference);
+            var subject = new ConferencesController(repository);
+
+            var result = subject.Details(id);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+
+            result.As<ViewResult>().Model.Should().BeOfType(typeof(ConferenceViewModel));
+            result.As<ViewResult>().Model.As<ConferenceViewModel>().Id.Should().Be(id);
+
+            A.CallTo(() => repository.FindById(id)).MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Fact]
+        public void Details_ShouldReturnA404()
+        {
+            var id = Guid.NewGuid();
+            var entityNotFoundException = new EntityNotFoundException(nameof(Conference), id.ToString());
+
+            var repository = A.Fake<IConferenceRepository>();
+            A.CallTo(() => repository.FindById(id)).Throws(entityNotFoundException);
+
+            var subject = new ConferencesController(repository);
+
+            var result = subject.Details(id);
+
+            A.CallTo(() => repository.FindById(id)).MustHaveHappened(Repeated.Exactly.Once);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<HttpNotFoundResult>();
+
+            var notFoundResult = result as HttpNotFoundResult;
+            notFoundResult.StatusDescription.Should().Be(entityNotFoundException.Message);
         }
     }
 }

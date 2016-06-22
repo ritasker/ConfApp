@@ -6,6 +6,7 @@
     <thead>
     <tr>
         <th>Name</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -13,7 +14,10 @@
     {
         <tr>
             <td>
-                <a href="#">@conf.Name</a>
+                @Html.ActionLink(conf.Name, "Details", new {conf.Id})
+            </td>
+            <td class="text-right">
+                @Html.ActionLink("Edit", "Edit", new { conf.Id })
             </td>
         </tr>
     }

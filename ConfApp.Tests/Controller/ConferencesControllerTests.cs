@@ -21,37 +21,31 @@ namespace ConfApp.Tests.Controller
         public void Index_ShouldReturnAListOfConferences()
         {
             // ARRANGE
-            var expectedConference = new ConferenceSummary
+            var mockData = new List<Domain.Models.ConferenceSummary>
             {
-                Id = Guid.NewGuid(),
-                Name = "DevConf"
-            };
-
-            var mockData = new List<Conference>
-            {
-                new Conference
+                new Domain.Models.ConferenceSummary
                 {
-                    Id = expectedConference.Id,
-                    Name = expectedConference.Name
+                    Id = Guid.NewGuid(),
+                    Name = "DevConf"
                 }
             };
 
             var repository = A.Fake<IConferenceRepository>();
-            A.CallTo(() => repository.Query()).Returns(mockData.AsQueryable());
+            A.CallTo(() => repository.FindAll(1, 0)).Returns(mockData);
 
             var subject = new ConferencesController(repository);
 
             // ACT
-            var result = subject.Index();
+            var result = subject.Index(1, 0);
 
             // ASSERT
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
-            result.As<ViewResult>().Model.Should().BeOfType(typeof(ConferenceList));
+            result.As<ViewResult>().Model.Should().BeOfType(typeof(List<Domain.Models.ConferenceSummary>));
 
-            var model = result.As<ViewResult>().Model as ConferenceList;
-            model.Items.Should().NotBeEmpty();
-            model.Items.Any(x => x.Id == expectedConference.Id).Should().BeTrue();
+            var model = result.As<ViewResult>().Model as List<Domain.Models.ConferenceSummary>;
+            model.Should().NotBeEmpty();
+            model.Any(x => x.Id == mockData[0].Id).Should().BeTrue();
         }
 
         [Fact]
@@ -81,7 +75,7 @@ namespace ConfApp.Tests.Controller
             var result = subject.Create(model);
 
             // ASSERT
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
+            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Never);
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
         }
@@ -98,7 +92,7 @@ namespace ConfApp.Tests.Controller
                 EndDate = DateTime.UtcNow.AddDays(6)
             };
 
-            var conference = new Conference
+            var conference = new ConferenceDetails
             {
                 Id = Guid.NewGuid(),
                 Name = model.Name,
@@ -108,7 +102,7 @@ namespace ConfApp.Tests.Controller
             };
 
             var repository = A.Fake<IConferenceRepository>();
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).Returns(conference);
+            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).Returns(conference);
 
             var subject = new ConferencesController(repository);
 
@@ -116,7 +110,7 @@ namespace ConfApp.Tests.Controller
             var result = subject.Create(model);
 
             // ASSERT
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectToRouteResult>();
             result.As<RedirectToRouteResult>().RouteValues["id"].Should().Be(conference.Id);
@@ -127,7 +121,7 @@ namespace ConfApp.Tests.Controller
         {
             var conferenceId = Guid.NewGuid();
 
-            Conference conference = new Conference
+            ConferenceDetails conference = new ConferenceDetails
             {
                 Id = conferenceId,
                 Name = Lorem.GetFirstWord(),
@@ -191,7 +185,7 @@ namespace ConfApp.Tests.Controller
 
             // ASSERT
             A.CallTo(() => repository.FindById(model.Id)).MustHaveHappened(Repeated.Never);
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
+            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Never);
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
         }
@@ -217,7 +211,7 @@ namespace ConfApp.Tests.Controller
 
             // ASSERT
             A.CallTo(() => repository.FindById(model.Id)).MustHaveHappened(Repeated.Exactly.Once);
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectToRouteResult>();
 
@@ -228,7 +222,7 @@ namespace ConfApp.Tests.Controller
         public void Details_ShouldReturnAConference()
         {
             var id = Guid.NewGuid();
-            var conference = new Conference
+            var conference = new ConferenceDetails
             {
                 Id = id,
                 Name = Lorem.GetFirstWord(),

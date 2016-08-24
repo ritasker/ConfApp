@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using ConfApp.Domain;
 using ConfApp.Domain.Exceptions;
+using System.Linq;
+using ConfApp.Domain.Data;
+using ConfApp.Domain.Models;
 
 namespace ConfApp.Data.Repositories
 {
-    using System.Linq;
-    using Domain.Data;
-    using Domain.Models;
-
     public class ConferenceRepository : IConferenceRepository
     {
         private readonly IContext _context;
@@ -17,12 +18,16 @@ namespace ConfApp.Data.Repositories
             _context = context;
         }
 
-        public IQueryable<Conference> Query()
+        public List<ConferenceSummary> FindAll(int top, int skip)
         {
-            return _context.Conferences;
+            return _context
+                .ConferenceSummaries
+                .Skip(skip)
+                .Take(top)
+                .ToList();
         }
 
-        public Conference FindById(Guid id)
+        public ConferenceDetails FindById(Guid id)
         {
             try
             {
@@ -36,7 +41,7 @@ namespace ConfApp.Data.Repositories
             }
         }
 
-        public Conference Save(Conference conference)
+        public ConferenceDetails Save(ConferenceDetails conference)
         {
             conference.Id = Guid.NewGuid();
             _context.Conferences.Add(conference);

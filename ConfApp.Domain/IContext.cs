@@ -6,7 +6,8 @@
 
     public interface IContext
     {
-        IDbSet<Conference> Conferences { get; }
+        IDbSet<ConferenceDetails> Conferences { get; }
+        IDbSet<ConferenceSummary> ConferenceSummaries { get; }
         Task<int> SaveChangesAsync();
     }
 }

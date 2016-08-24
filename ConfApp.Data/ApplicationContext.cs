@@ -11,6 +11,7 @@
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationContext>());
         }
 
-        public IDbSet<Conference> Conferences { get; set; }
+        public IDbSet<ConferenceDetails> Conferences { get; set; }
+        public IDbSet<ConferenceSummary> ConferenceSummaries { get; set; }
     }
 }

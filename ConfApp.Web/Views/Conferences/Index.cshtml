@@ -1,4 +1,4 @@
-﻿@model ConfApp.Web.Models.Conferences.ConferenceList
+﻿@model List<ConfApp.Domain.Models.ConferenceSummary>
 
 <h2>Conferences</h2>
 
@@ -10,7 +10,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var conf in Model.Items)
+    @foreach (var conf in Model)
     {
         <tr>
             <td>

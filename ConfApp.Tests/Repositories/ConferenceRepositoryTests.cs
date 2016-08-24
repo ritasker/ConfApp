@@ -15,37 +15,9 @@ namespace ConfApp.Tests.Repositories
     public class ConferenceRepositoryTests
     {
         [Fact]
-        public void QueryShouldReturnAQueryable()
-        {
-            var conference = new Conference
-            {
-                Id = Guid.NewGuid(),
-                Name = string.Join(" ", Faker.Lorem.Words(3)),
-                Description = Faker.Lorem.Sentence(),
-                StartDate = DateTime.UtcNow.AddDays(3),
-                EndDate = DateTime.UtcNow.AddDays(6)
-            };
-
-            var set = new FakeDbSet<Conference>
-            {
-                conference
-            };
-
-            var context = A.Fake<IContext>();
-            A.CallTo(() => context.Conferences).Returns(set);
-
-            var subject = new ConferenceRepository(context);
-
-            var result = subject.Query();
-
-            result.Should().NotBeNull();
-            result.First().Id.Should().Be(conference.Id);
-        }
-
-        [Fact]
         public void SaveShouldSaveAndReturnANewConference()
         {
-            var conference = new Conference
+            var conference = new ConferenceDetails
             {
                 Name = string.Join(" ", Faker.Lorem.Words(3)),
                 Description = Faker.Lorem.Sentence(),
@@ -54,7 +26,7 @@ namespace ConfApp.Tests.Repositories
             };
 
             var context = A.Fake<IContext>();
-            A.CallTo(() => context.Conferences).Returns(new FakeDbSet<Conference>());
+            A.CallTo(() => context.Conferences).Returns(new FakeDbSet<ConferenceDetails>());
             
             var subject = new ConferenceRepository(context);
 
@@ -67,13 +39,94 @@ namespace ConfApp.Tests.Repositories
         }
 
         [Fact]
+        public void FindAllShouldReturnAListOfConferenceSummaries()
+        {
+            var conference = new FakeDbSet<ConferenceSummary>
+            {
+                new ConferenceSummary
+                {
+                    Id = Guid.NewGuid(),
+                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                },
+                new ConferenceSummary
+                {
+                    Id = Guid.NewGuid(),
+                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                },
+                new ConferenceSummary
+                {
+                    Id = Guid.NewGuid(),
+                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                }
+            };
+
+            var context = A.Fake<IContext>();
+            A.CallTo(() => context.ConferenceSummaries).Returns(conference);
+
+            var subject = new ConferenceRepository(context);
+
+            var result = subject.FindAll(1, 0);
+
+            result.Should().NotBeNull();
+            result.First().Id.Should().Be(conference.First().Id);
+        }
+
+        [Fact]
+        public void FindAllShouldSkipAndTakeRecords()
+        {
+            var conference = new FakeDbSet<ConferenceSummary>
+            {
+                new ConferenceSummary
+                {
+                    Id = Guid.NewGuid(),
+                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                },
+                new ConferenceSummary
+                {
+                    Id = Guid.NewGuid(),
+                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                },
+                new ConferenceSummary
+                {
+                    Id = Guid.NewGuid(),
+                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                }
+            };
+
+            var context = A.Fake<IContext>();
+            A.CallTo(() => context.ConferenceSummaries).Returns(conference);
+
+            var subject = new ConferenceRepository(context);
+
+            var result = subject.FindAll(1, 1);
+
+            result.Should().NotBeNull();
+            result.Count.Should().Be(1);
+            result.First().Id.Should().Be(conference.ElementAt(1).Id);
+        }
+
+        [Fact]
+        public void FindAllShouldReturnsAnEmptyList()
+        {
+            var context = A.Fake<IContext>();
+            A.CallTo(() => context.ConferenceSummaries).Returns(new FakeDbSet<ConferenceSummary>());
+
+            var subject = new ConferenceRepository(context);
+
+            var result = subject.FindAll(1, 0);
+
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
+
+        [Fact]
         public void FindByIdShouldReturnAConference()
         {
             var id = Guid.NewGuid();
 
-            var set = new FakeDbSet<Conference>
+            var set = new FakeDbSet<ConferenceDetails>
             {
-                new Conference
+                new ConferenceDetails
                 {
                     Id = id,
                     Name = string.Join(" ", Faker.Lorem.Words(3)),
@@ -93,16 +146,16 @@ namespace ConfApp.Tests.Repositories
             A.CallTo(() => context.Conferences).MustHaveHappened(Repeated.Exactly.Once);
 
             result.Should().NotBeNull();
-            result.Should().BeOfType<Conference>();
+            result.Should().BeOfType<ConferenceDetails>();
             result.Id.Should().Be(id);
         }
 
         [Fact]
         public void FindByIdShouldThrowAnException()
         {
-            var set = new FakeDbSet<Conference>
+            var set = new FakeDbSet<ConferenceDetails>
             {
-                new Conference
+                new ConferenceDetails
                 {
                     Id = Guid.NewGuid(),
                     Name = string.Join(" ", Faker.Lorem.Words(3)),

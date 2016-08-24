@@ -18,13 +18,11 @@
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int top = 10, int skip = 0)
         {
-            var conferences = _repository.Query()
-                .Select(c => new ConferenceSummary {Id = c.Id, Name = c.Name})
-                .ToList();
+            var conferences = _repository.FindAll(top, skip);
 
-            return View(new ConferenceList {Items = conferences});
+            return View(conferences);
         }
 
         [HttpGet]
@@ -38,7 +36,7 @@
         {
             if (ModelState.IsValid)
             {
-                var conference = new Conference
+                var conference = new ConferenceDetails
                 {
                     Name = model.Name,
                     Description = model.Description,

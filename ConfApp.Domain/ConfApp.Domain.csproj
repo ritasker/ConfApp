@@ -53,6 +53,8 @@
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="IContext.cs" />
     <Compile Include="Models\Conference.cs" />
+    <Compile Include="Models\ConferenceDetails.cs" />
+    <Compile Include="Models\ConferenceSummary.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

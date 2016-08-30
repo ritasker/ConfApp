@@ -17,7 +17,7 @@ namespace ConfApp.Tests.Repositories
         [Fact]
         public void SaveShouldSaveAndReturnANewConference()
         {
-            var conference = new ConferenceDetails
+            var conference = new Conference
             {
                 Name = string.Join(" ", Lorem.Words(3)),
                 Description = Lorem.Sentence(),
@@ -68,7 +68,7 @@ namespace ConfApp.Tests.Repositories
             var result = subject.FindAll(1, 0);
 
             result.Should().NotBeNull();
-            result.First().Id.Should().Be(conference.First().Id);
+            result.Count.Should().Be(1);
         }
 
         [Fact]

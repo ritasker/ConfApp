@@ -74,7 +74,7 @@
             var result = subject.Create(model);
 
             // ASSERT
-            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Never);
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
         }
@@ -91,7 +91,7 @@
                 EndDate = DateTime.UtcNow.AddDays(6)
             };
 
-            var conference = new ConferenceDetails
+            var conference = new Conference
             {
                 Id = Guid.NewGuid(),
                 Name = model.Name,
@@ -101,7 +101,7 @@
             };
 
             var repository = A.Fake<IConferenceRepository>();
-            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).Returns(conference);
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).Returns(conference);
 
             var subject = new ConferencesController(repository);
 
@@ -109,7 +109,7 @@
             var result = subject.Create(model);
 
             // ASSERT
-            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectToRouteResult>();
             result.As<RedirectToRouteResult>().RouteValues["id"].Should().Be(conference.Id);
@@ -184,7 +184,7 @@
 
             // ASSERT
             A.CallTo(() => repository.FindById(model.Id)).MustHaveHappened(Repeated.Never);
-            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Never);
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
         }
@@ -210,7 +210,7 @@
 
             // ASSERT
             A.CallTo(() => repository.FindById(model.Id)).MustHaveHappened(Repeated.Exactly.Once);
-            A.CallTo(() => repository.Save(A<ConferenceDetails>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectToRouteResult>();
 
@@ -239,8 +239,8 @@
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
 
-            result.As<ViewResult>().Model.Should().BeOfType(typeof(ConferenceViewModel));
-            result.As<ViewResult>().Model.As<ConferenceViewModel>().Id.Should().Be(id);
+            result.As<ViewResult>().Model.Should().BeOfType(typeof(ConferenceDetails));
+            result.As<ViewResult>().Model.As<ConferenceDetails>().Id.Should().Be(id);
 
             A.CallTo(() => repository.FindById(id)).MustHaveHappened(Repeated.Exactly.Once);
         }

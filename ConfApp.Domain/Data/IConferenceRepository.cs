@@ -8,6 +8,6 @@
     {
         List<ConferenceSummary> FindAll(int top, int skip);
         ConferenceDetails FindById(Guid id);
-        ConferenceDetails Save(ConferenceDetails conference);
+        Conference Save(Conference conference);
     }
 }

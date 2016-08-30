@@ -35,7 +35,7 @@
         {
             if (ModelState.IsValid)
             {
-                var conference = new ConferenceDetails
+                var conference = new Conference
                 {
                     Name = model.Name,
                     Description = model.Description,
@@ -87,7 +87,7 @@
                 conference.StartDate = model.StartDate.Value;
                 conference.EndDate = model.EndDate.Value;
 
-                _repository.Save(conference);
+                _repository.Save(new Conference(conference));
 
                 return RedirectToAction("Details", new {model.Id});
             }
@@ -101,17 +101,7 @@
             try
             {
                 var conference = _repository.FindById(id);
-
-                var model = new ConferenceViewModel
-                {
-                    Id = conference.Id,
-                    Name = conference.Name,
-                    Description = conference.Description,
-                    StartDate = conference.StartDate,
-                    EndDate = conference.EndDate
-                };
-
-                return View(model);
+                return View(conference);
             }
             catch (EntityNotFoundException ex)
             {

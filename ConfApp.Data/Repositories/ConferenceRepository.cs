@@ -41,10 +41,10 @@ namespace ConfApp.Data.Repositories
             }
         }
 
-        public ConferenceDetails Save(ConferenceDetails conference)
+        public Conference Save(Conference conference)
         {
             conference.Id = Guid.NewGuid();
-            _context.Conferences.Add(conference);
+            //_context.Conferences.Add(conference);
             _context.SaveChangesAsync().Wait();
 
             return conference;

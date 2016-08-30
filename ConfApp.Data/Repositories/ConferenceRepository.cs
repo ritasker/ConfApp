@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
+using System.Linq;
 using ConfApp.Domain;
 using ConfApp.Domain.Exceptions;
-using System.Linq;
 using ConfApp.Domain.Data;
 using ConfApp.Domain.Models;
 
@@ -22,6 +21,7 @@ namespace ConfApp.Data.Repositories
         {
             return _context
                 .ConferenceSummaries
+                .OrderBy(x => x.Name)
                 .Skip(skip)
                 .Take(top)
                 .ToList();

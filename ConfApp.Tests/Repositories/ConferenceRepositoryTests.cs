@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
+using ConfApp.Data.Repositories;
 using ConfApp.Domain;
 using ConfApp.Domain.Exceptions;
 using ConfApp.Domain.Models;
 using ConfApp.Tests.Stubs;
 using FakeItEasy;
+using Faker;
 using FluentAssertions;
+using Xunit;
 
 namespace ConfApp.Tests.Repositories
 {
-    using Data.Repositories;
-    using Xunit;
-
     public class ConferenceRepositoryTests
     {
         [Fact]
@@ -19,8 +19,8 @@ namespace ConfApp.Tests.Repositories
         {
             var conference = new ConferenceDetails
             {
-                Name = string.Join(" ", Faker.Lorem.Words(3)),
-                Description = Faker.Lorem.Sentence(),
+                Name = string.Join(" ", Lorem.Words(3)),
+                Description = Lorem.Sentence(),
                 StartDate = DateTime.UtcNow.AddDays(3),
                 EndDate = DateTime.UtcNow.AddDays(6)
             };
@@ -46,17 +46,17 @@ namespace ConfApp.Tests.Repositories
                 new ConferenceSummary
                 {
                     Id = Guid.NewGuid(),
-                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                    Name = string.Join(" ", Lorem.Words(3))
                 },
                 new ConferenceSummary
                 {
                     Id = Guid.NewGuid(),
-                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                    Name = string.Join(" ", Lorem.Words(3))
                 },
                 new ConferenceSummary
                 {
                     Id = Guid.NewGuid(),
-                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                    Name = string.Join(" ", Lorem.Words(3))
                 }
             };
 
@@ -79,17 +79,17 @@ namespace ConfApp.Tests.Repositories
                 new ConferenceSummary
                 {
                     Id = Guid.NewGuid(),
-                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                    Name = string.Join(" ", Lorem.Words(3))
                 },
                 new ConferenceSummary
                 {
                     Id = Guid.NewGuid(),
-                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                    Name = string.Join(" ", Lorem.Words(3))
                 },
                 new ConferenceSummary
                 {
                     Id = Guid.NewGuid(),
-                    Name = string.Join(" ", Faker.Lorem.Words(3))
+                    Name = string.Join(" ", Lorem.Words(3))
                 }
             };
 
@@ -129,8 +129,8 @@ namespace ConfApp.Tests.Repositories
                 new ConferenceDetails
                 {
                     Id = id,
-                    Name = string.Join(" ", Faker.Lorem.Words(3)),
-                    Description = Faker.Lorem.Sentence(),
+                    Name = string.Join(" ", Lorem.Words(3)),
+                    Description = Lorem.Sentence(),
                     StartDate = DateTime.UtcNow.AddDays(3),
                     EndDate = DateTime.UtcNow.AddDays(6)
                 }
@@ -158,8 +158,8 @@ namespace ConfApp.Tests.Repositories
                 new ConferenceDetails
                 {
                     Id = Guid.NewGuid(),
-                    Name = string.Join(" ", Faker.Lorem.Words(3)),
-                    Description = Faker.Lorem.Sentence(),
+                    Name = string.Join(" ", Lorem.Words(3)),
+                    Description = Lorem.Sentence(),
                     StartDate = DateTime.UtcNow.AddDays(3),
                     EndDate = DateTime.UtcNow.AddDays(6)
                 }

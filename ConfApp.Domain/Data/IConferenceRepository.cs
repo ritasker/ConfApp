@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace ConfApp.Domain.Data
+﻿namespace ConfApp.Domain.Data
 {
     using System;
     using Models;
+    using System.Collections.Generic;
 
     public interface IConferenceRepository
     {

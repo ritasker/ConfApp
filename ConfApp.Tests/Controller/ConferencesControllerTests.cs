@@ -1,6 +1,4 @@
-﻿using ConfApp.Domain.Exceptions;
-
-namespace ConfApp.Tests.Controller
+﻿namespace ConfApp.Tests.Controller
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +12,7 @@ namespace ConfApp.Tests.Controller
     using Web.Controllers;
     using Web.Models.Conferences;
     using Xunit;
+    using Domain.Exceptions;
 
     public class ConferencesControllerTests
     {

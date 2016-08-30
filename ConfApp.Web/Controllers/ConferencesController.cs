@@ -1,6 +1,5 @@
 ﻿namespace ConfApp.Web.Controllers
 {
-    using System.Linq;
     using System.Web.Mvc;
     using Domain.Data;
     using Domain.Models;

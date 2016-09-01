@@ -102,7 +102,7 @@ namespace ConfApp.Tests.Repositories
 
             result.Should().NotBeNull();
             result.Count.Should().Be(1);
-            result.First().Id.Should().Be(conference.ElementAt(1).Id);
+            result.First().Id.Should().Be(conference.OrderBy(x => x.Name).ElementAt(1).Id);
         }
 
         [Fact]

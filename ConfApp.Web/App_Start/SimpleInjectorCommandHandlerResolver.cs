@@ -1,7 +1,8 @@
 ﻿using System.Windows.Input;
+using ConfApp.Domain.Infrastructure;
 using SimpleInjector;
 
-namespace ConfApp.Domain.Infrastructure
+namespace ConfApp.Web
 {
     public class SimpleInjectorCommandHandlerResolver : ICommandHandlerResolver
     {
@@ -12,7 +13,7 @@ namespace ConfApp.Domain.Infrastructure
             _container = container;
         }
 
-        public ICommandHandler<TCommand> Resolve<TCommand>() where TCommand : ICommand
+        public ICommandHandler<TCommand> ResolveForCommand<TCommand>() where TCommand : ICommand
         {
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(typeof(TCommand));
             return (ICommandHandler<TCommand>)_container.GetInstance(handlerType);

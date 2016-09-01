@@ -15,7 +15,7 @@ namespace ConfApp.Domain.Infrastructure
 
         public void Issue<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var handler = _commandHandlerResolver.Resolve<TCommand>();
+            var handler = _commandHandlerResolver.ResolveForCommand<TCommand>();
             handler.Handle(command);
         }
     }

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConfApp.Domain</RootNamespace>
     <AssemblyName>ConfApp.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -58,7 +58,6 @@
     <Compile Include="Infrastructure\ICommandHandler.cs" />
     <Compile Include="Infrastructure\ICommandHandlerResolver.cs" />
     <Compile Include="Infrastructure\Mediator.cs" />
-    <Compile Include="Infrastructure\SimpleInjectorCommandHandlerResolver.cs" />
     <Compile Include="Models\Conference.cs" />
     <Compile Include="Models\ConferenceDetails.cs" />
     <Compile Include="Models\ConferenceSummary.cs" />

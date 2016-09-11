@@ -1,9 +1,8 @@
-﻿using System.Windows.Input;
-using SimpleInjector;
+﻿using SimpleInjector;
 
 namespace ConfApp.Domain.Infrastructure
 {
-    public class Mediator
+    public class Mediator : IMediator
     {
         private readonly ICommandHandlerResolver _commandHandlerResolver;
         private readonly Container _container;
@@ -13,10 +12,10 @@ namespace ConfApp.Domain.Infrastructure
             _commandHandlerResolver = commandHandlerResolver;
         }
 
-        public void Issue<TCommand>(TCommand command) where TCommand : ICommand
+        public TResult Issue<TResult>(ICommand<TResult> command)
         {
-            var handler = _commandHandlerResolver.ResolveForCommand<TCommand>();
-            handler.Handle(command);
+            var handler = _commandHandlerResolver.ResolveForCommand(command);
+            return handler.Handle(command);
         }
     }
 }

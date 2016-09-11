@@ -1,6 +1,7 @@
 ﻿using ConfApp.Data;
 using ConfApp.Data.Repositories;
 using ConfApp.Domain;
+using ConfApp.Domain.Conferences.Commands;
 using ConfApp.Domain.Data;
 
 namespace ConfApp.Web

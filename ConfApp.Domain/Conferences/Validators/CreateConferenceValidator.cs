@@ -1,16 +1,8 @@
-﻿namespace ConfApp.Web.Models.Conferences
+﻿using ConfApp.Domain.Conferences.Commands;
+using FluentValidation;
+
+namespace ConfApp.Web.Models.Conferences
 {
-    using System;
-    using FluentValidation;
-
-    public class CreateConference
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-    }
-
     public class CreateConferenceValidator : AbstractValidator<CreateConference>
     {
         public CreateConferenceValidator()

@@ -13,10 +13,10 @@ namespace ConfApp.Web
             _container = container;
         }
 
-        public ICommandHandler<TCommand> ResolveForCommand<TCommand>() where TCommand : ICommand
+        public CommandHandler<ICommand<TResult>, TResult> ResolveForCommand<TResult>(ICommand<TResult> command)
         {
-            var handlerType = typeof(ICommandHandler<>).MakeGenericType(typeof(TCommand));
-            return (ICommandHandler<TCommand>)_container.GetInstance(handlerType);
+            var handlerType = typeof(CommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
+            return (CommandHandler<ICommand<TResult>, TResult>) _container.GetInstance(handlerType);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace ConfApp.Web.Controllers
+﻿using ConfApp.Domain.Conferences.Commands;
+using ConfApp.Domain.Infrastructure;
+
+namespace ConfApp.Web.Controllers
 {
     using System.Web.Mvc;
     using Domain.Data;
@@ -10,10 +13,12 @@
     public class ConferencesController : Controller
     {
         private readonly IConferenceRepository _repository;
+        private readonly IMediator _mediator;
 
-        public ConferencesController(IConferenceRepository repository)
+        public ConferencesController(IConferenceRepository repository, IMediator mediator)
         {
             _repository = repository;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -31,24 +36,15 @@
         }
 
         [HttpPost]
-        public ActionResult Create(CreateConference model)
+        public ActionResult Create(CreateConference command)
         {
             if (ModelState.IsValid)
             {
-                var conference = new Conference
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    StartDate = model.StartDate.Value,
-                    EndDate = model.EndDate.Value
-                };
-
-                conference = _repository.Save(conference);
-
-                return RedirectToAction("Details", new {conference.Id });
+                Guid id = _mediator.Issue(command);
+                return RedirectToAction("Details", new {id });
             }
 
-            return View(model);
+            return View(command);
         }
 
         [HttpGet]

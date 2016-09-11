@@ -1,19 +1,21 @@
-﻿namespace ConfApp.Tests.Controller
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Domain.Data;
-    using Domain.Models;
-    using FakeItEasy;
-    using Faker;
-    using FluentAssertions;
-    using Web.Controllers;
-    using Web.Models.Conferences;
-    using Xunit;
-    using Domain.Exceptions;
+﻿using ConfApp.Domain.Conferences.Commands;
+using ConfApp.Domain.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using ConfApp.Domain.Data;
+using ConfApp.Domain.Models;
+using FakeItEasy;
+using Faker;
+using FluentAssertions;
+using ConfApp.Web.Controllers;
+using ConfApp.Web.Models.Conferences;
+using Xunit;
+using ConfApp.Domain.Exceptions;
 
+namespace ConfApp.Tests.Controller
+{
     public class ConferencesControllerTests
     {
         [Fact]
@@ -32,7 +34,7 @@
             var repository = A.Fake<IConferenceRepository>();
             A.CallTo(() => repository.FindAll(1, 0)).Returns(mockData);
 
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
 
             // ACT
             var result = subject.Index(1, 0);
@@ -51,7 +53,7 @@
         public void Create_ShouldReturnAView()
         {
             // ARRANGE
-            var subject = new ConferencesController(null);
+            var subject = new ConferencesController(null, null);
 
             // ACT
             var result = subject.Create();
@@ -67,7 +69,7 @@
             // ARRANGE
             var model = new CreateConference();
             var repository = A.Fake<IConferenceRepository>();
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
             subject.ModelState.AddModelError("aProp", "Something is wrong");
 
             // ACT
@@ -83,7 +85,7 @@
         public void Create_ShouldSaveTheConference()
         {
             // ARRANGE
-            var model = new CreateConference
+            var command = new CreateConference
             {
                 Name = Lorem.GetFirstWord(),
                 Description = Lorem.Sentence(),
@@ -91,28 +93,23 @@
                 EndDate = DateTime.UtcNow.AddDays(6)
             };
 
-            var conference = new Conference
-            {
-                Id = Guid.NewGuid(),
-                Name = model.Name,
-                Description = model.Description,
-                StartDate = model.StartDate.Value,
-                EndDate = model.EndDate.Value
-            };
+            var conferenceId = Guid.NewGuid();
 
-            var repository = A.Fake<IConferenceRepository>();
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).Returns(conference);
+            var mediator = A.Fake<IMediator>();
+            A.CallTo(() => mediator.Issue(command)).Returns(conferenceId);
 
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(null, mediator);
 
             // ACT
-            var result = subject.Create(model);
+            var result = subject.Create(command);
 
             // ASSERT
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectToRouteResult>();
-            result.As<RedirectToRouteResult>().RouteValues["id"].Should().Be(conference.Id);
+            var redirectToRouteResult = result.As<RedirectToRouteResult>();
+
+            redirectToRouteResult.RouteValues["action"].Should().Be("Details");
+            redirectToRouteResult.RouteValues["id"].Should().Be(conferenceId);
         }
 
         [Fact]
@@ -132,7 +129,7 @@
             var repository = A.Fake<IConferenceRepository>();
             A.CallTo(() => repository.FindById(conferenceId)).Returns(conference);
 
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
 
             var result = subject.Edit(conferenceId);
 
@@ -157,7 +154,7 @@
             var repository = A.Fake<IConferenceRepository>();
             A.CallTo(() => repository.FindById(conferenceId)).Throws(entityNotFoundException);
 
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
 
             var result = subject.Edit(conferenceId);
 
@@ -176,7 +173,7 @@
             // ARRANGE
             var model = new EditConference();
             var repository = A.Fake<IConferenceRepository>();
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
             subject.ModelState.AddModelError("aProp", "Something is wrong");
 
             // ACT
@@ -203,7 +200,7 @@
             };
 
             var repository = A.Fake<IConferenceRepository>();
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
 
             // ACT
             var result = subject.Edit(model);
@@ -232,7 +229,7 @@
 
             var repository = A.Fake<IConferenceRepository>();
             A.CallTo(() => repository.FindById(id)).Returns(conference);
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
 
             var result = subject.Details(id);
 
@@ -254,7 +251,7 @@
             var repository = A.Fake<IConferenceRepository>();
             A.CallTo(() => repository.FindById(id)).Throws(entityNotFoundException);
 
-            var subject = new ConferencesController(repository);
+            var subject = new ConferencesController(repository, null);
 
             var result = subject.Details(id);
 

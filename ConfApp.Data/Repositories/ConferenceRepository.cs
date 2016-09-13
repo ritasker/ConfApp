@@ -10,9 +10,9 @@ namespace ConfApp.Data.Repositories
 {
     public class ConferenceRepository : IConferenceRepository
     {
-        private readonly IContext _context;
+        private readonly IReadContext _context;
 
-        public ConferenceRepository(IContext context)
+        public ConferenceRepository(IReadContext context)
         {
             _context = context;
         }

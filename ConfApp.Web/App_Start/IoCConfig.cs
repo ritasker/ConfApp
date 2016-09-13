@@ -22,7 +22,7 @@ namespace ConfApp.Web
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             // Repositories and Data Access Registrations
-            container.Register<IContext, ApplicationContext>(Lifestyle.Singleton);
+            container.Register<IReadContext, ReadContext>(Lifestyle.Singleton);
             container.Register<IConferenceRepository, ConferenceRepository>();
 
             // Model Validations Registrations

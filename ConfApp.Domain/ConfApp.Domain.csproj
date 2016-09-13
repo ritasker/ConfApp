@@ -56,10 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conferences\Commands\CreateConference.cs" />
+    <Compile Include="Conferences\Handlers\CreateConfereceHandler.cs" />
     <Compile Include="Conferences\Validators\CreateConferenceValidator.cs" />
     <Compile Include="Data\IConferenceRepository.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
-    <Compile Include="IContext.cs" />
+    <Compile Include="IReadContext.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\CommandHandler.cs" />
     <Compile Include="Infrastructure\ICommandHandlerResolver.cs" />
@@ -78,11 +79,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Conference" />
-    <Folder Include="Conferences" />
-    <Folder Include="Conferences\Commands" />
-    <Folder Include="Conferences\Validators" />
-    <Folder Include="Conference\Entities" />
+    <Folder Include="Conferences">
+      <Link>Conferences</Link>
+    </Folder>
+    <Folder Include="Conferences\Commands">
+      <Link>Conferences\Commands</Link>
+    </Folder>
+    <Folder Include="Conferences\Handlers">
+      <Link>Conferences\Handlers</Link>
+    </Folder>
+    <Folder Include="Conferences\Validators">
+      <Link>Conferences\Validators</Link>
+    </Folder>
     <Folder Include="Infrastructure" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

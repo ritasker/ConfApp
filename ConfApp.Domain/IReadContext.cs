@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using Models;
 
-    public interface IContext
+    public interface IReadContext
     {
         IDbSet<ConferenceDetails> Conferences { get; }
         IDbSet<ConferenceSummary> ConferenceSummaries { get; }

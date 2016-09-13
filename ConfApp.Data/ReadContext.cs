@@ -4,11 +4,11 @@
     using Domain;
     using Domain.Models;
 
-    public class ApplicationContext : DbContext, IContext
+    public class ReadContext : DbContext, IReadContext
     {
-        public ApplicationContext()
+        public ReadContext()
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ReadContext>());
         }
 
         public IDbSet<ConferenceDetails> Conferences { get; set; }

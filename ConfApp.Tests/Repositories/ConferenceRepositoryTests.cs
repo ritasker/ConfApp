@@ -25,7 +25,7 @@ namespace ConfApp.Tests.Repositories
                 EndDate = DateTime.UtcNow.AddDays(6)
             };
 
-            var context = A.Fake<IContext>();
+            var context = A.Fake<IReadContext>();
             A.CallTo(() => context.Conferences).Returns(new FakeDbSet<ConferenceDetails>());
             
             var subject = new ConferenceRepository(context);
@@ -60,7 +60,7 @@ namespace ConfApp.Tests.Repositories
                 }
             };
 
-            var context = A.Fake<IContext>();
+            var context = A.Fake<IReadContext>();
             A.CallTo(() => context.ConferenceSummaries).Returns(conference);
 
             var subject = new ConferenceRepository(context);
@@ -93,7 +93,7 @@ namespace ConfApp.Tests.Repositories
                 }
             };
 
-            var context = A.Fake<IContext>();
+            var context = A.Fake<IReadContext>();
             A.CallTo(() => context.ConferenceSummaries).Returns(conference);
 
             var subject = new ConferenceRepository(context);
@@ -108,7 +108,7 @@ namespace ConfApp.Tests.Repositories
         [Fact]
         public void FindAllShouldReturnsAnEmptyList()
         {
-            var context = A.Fake<IContext>();
+            var context = A.Fake<IReadContext>();
             A.CallTo(() => context.ConferenceSummaries).Returns(new FakeDbSet<ConferenceSummary>());
 
             var subject = new ConferenceRepository(context);
@@ -136,7 +136,7 @@ namespace ConfApp.Tests.Repositories
                 }
             };
 
-            var context = A.Fake<IContext>();
+            var context = A.Fake<IReadContext>();
             A.CallTo(() => context.Conferences).Returns(set);
             
             var subject = new ConferenceRepository(context);
@@ -165,7 +165,7 @@ namespace ConfApp.Tests.Repositories
                 }
             };
 
-            var context = A.Fake<IContext>();
+            var context = A.Fake<IReadContext>();
             A.CallTo(() => context.Conferences).Returns(set);
 
             var subject = new ConferenceRepository(context);

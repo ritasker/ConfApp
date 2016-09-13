@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ConfApp.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\ConfApp.Web\Bin\ConfApp.Domain.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -105,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Controller\ConferencesControllerTests.cs" />
     <Compile Include="Controller\HomeControllerTests.cs" />
+    <Compile Include="Handlers\CreateConferenceHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ConferenceRepositoryTests.cs" />
     <Compile Include="Stubs\FakeDbSet.cs" />
@@ -126,6 +130,9 @@
       <Project>{1be69d09-9b3a-48e7-b112-015d448f97f0}</Project>
       <Name>ConfApp.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Handlers" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

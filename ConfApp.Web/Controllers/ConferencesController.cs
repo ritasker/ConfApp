@@ -13,12 +13,12 @@ namespace ConfApp.Web.Controllers
     public class ConferencesController : Controller
     {
         private readonly IConferenceRepository _repository;
-        private readonly IMediator _mediator;
+        private readonly ICommandRouter _commandRouter;
 
-        public ConferencesController(IConferenceRepository repository, IMediator mediator)
+        public ConferencesController(IConferenceRepository repository, ICommandRouter commandRouter)
         {
             _repository = repository;
-            _mediator = mediator;
+            _commandRouter = commandRouter;
         }
 
         [HttpGet]
@@ -40,7 +40,7 @@ namespace ConfApp.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid id = _mediator.Issue(command);
+                Guid id = _commandRouter.Issue(command);
                 return RedirectToAction("Details", new {id });
             }
 

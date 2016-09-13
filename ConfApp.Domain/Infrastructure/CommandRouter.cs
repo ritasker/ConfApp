@@ -2,12 +2,12 @@
 
 namespace ConfApp.Domain.Infrastructure
 {
-    public class Mediator : IMediator
+    public class CommandRouter : ICommandRouter
     {
         private readonly ICommandHandlerResolver _commandHandlerResolver;
         private readonly Container _container;
 
-        public Mediator(ICommandHandlerResolver commandHandlerResolver)
+        public CommandRouter(ICommandHandlerResolver commandHandlerResolver)
         {
             _commandHandlerResolver = commandHandlerResolver;
         }

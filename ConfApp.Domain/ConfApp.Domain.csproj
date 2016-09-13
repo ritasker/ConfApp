@@ -64,8 +64,8 @@
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\CommandHandler.cs" />
     <Compile Include="Infrastructure\ICommandHandlerResolver.cs" />
-    <Compile Include="Infrastructure\IMediator.cs" />
-    <Compile Include="Infrastructure\Mediator.cs" />
+    <Compile Include="Infrastructure\ICommandRouter.cs" />
+    <Compile Include="Infrastructure\CommandRouter.cs" />
     <Compile Include="Models\Conference.cs" />
     <Compile Include="Models\ConferenceDetails.cs" />
     <Compile Include="Models\ConferenceSummary.cs" />

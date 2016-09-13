@@ -95,7 +95,7 @@ namespace ConfApp.Tests.Controller
 
             var conferenceId = Guid.NewGuid();
 
-            var mediator = A.Fake<IMediator>();
+            var mediator = A.Fake<ICommandRouter>();
             A.CallTo(() => mediator.Issue(command)).Returns(conferenceId);
 
             var subject = new ConferencesController(null, mediator);

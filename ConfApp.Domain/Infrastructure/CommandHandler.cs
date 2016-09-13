@@ -2,6 +2,6 @@
 {
     public abstract class CommandHandler<TCommand, TResult> where TCommand : ICommand<TResult>
     {
-        public abstract TResult Handle(ICommand<TResult> message);
+        public abstract TResult Handle(TCommand command);
     }
 }

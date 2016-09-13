@@ -1,10 +1,6 @@
 ﻿using System;
-using ConfApp.Domain;
 using ConfApp.Domain.Conferences.Commands;
 using ConfApp.Domain.Conferences.Handlers;
-using ConfApp.Domain.Models;
-using ConfApp.Tests.Stubs;
-using FakeItEasy;
 using FluentAssertions;
 using Xunit;
 
@@ -16,12 +12,18 @@ namespace ConfApp.Tests.Handlers
         public void ShouldReturnTheIdOfTheNewConference()
         {
             // ARRANGE
-            var context = A.Fake<IReadContext>();
-            A.CallTo(() => context.Conferences).Returns(new FakeDbSet<ConferenceDetails>());
+            var createConference = new CreateConference
+            {
+                Name = string.Join(" ", Faker.Lorem.Words(3)),
+                Description = string.Join(" ", Faker.Lorem.Sentence()),
+                StartDate = DateTime.UtcNow.AddDays(3),
+                EndDate = DateTime.UtcNow.AddDays(6)
+            };
+
             var subject = new CreateConfereceHandler();
 
             // ACT
-            Guid result = subject.Handle(new CreateConference());
+            Guid result = subject.Handle(createConference);
 
             // ASSERT
             result.Should().NotBeEmpty();

@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using ConfApp.Domain.Infrastructure;
+﻿using ConfApp.Domain.Infrastructure;
 using SimpleInjector;
 
 namespace ConfApp.Web

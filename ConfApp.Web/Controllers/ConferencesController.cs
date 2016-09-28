@@ -1,19 +1,18 @@
-﻿using ConfApp.Domain.Conferences.Commands;
+﻿using System;
+using System.Web.Mvc;
+using ConfApp.Domain.Conferences.Commands;
+using ConfApp.Domain.Data;
+using ConfApp.Domain.Exceptions;
 using ConfApp.Domain.Infrastructure;
+using ConfApp.Domain.Models;
+using ConfApp.Web.Models.Conferences;
 
 namespace ConfApp.Web.Controllers
 {
-    using System.Web.Mvc;
-    using Domain.Data;
-    using Domain.Models;
-    using Models.Conferences;
-    using System;
-    using Domain.Exceptions;
-
     public class ConferencesController : Controller
     {
-        private readonly IConferenceRepository _repository;
         private readonly ICommandRouter _commandRouter;
+        private readonly IConferenceRepository _repository;
 
         public ConferencesController(IConferenceRepository repository, ICommandRouter commandRouter)
         {
@@ -38,13 +37,8 @@ namespace ConfApp.Web.Controllers
         [HttpPost]
         public ActionResult Create(CreateConference command)
         {
-            if (ModelState.IsValid)
-            {
-                Guid id = _commandRouter.Issue(command);
-                return RedirectToAction("Details", new {id });
-            }
-
-            return View(command);
+            var id = _commandRouter.Issue(command);
+            return RedirectToAction("Details", new {id});
         }
 
         [HttpGet]
@@ -74,21 +68,16 @@ namespace ConfApp.Web.Controllers
         [HttpPost]
         public ActionResult Edit(EditConference model)
         {
-            if (ModelState.IsValid)
-            {
-                var conference = _repository.FindById(model.Id);
+            var conference = _repository.FindById(model.Id);
 
-                conference.Name = model.Name;
-                conference.Description = model.Description;
-                conference.StartDate = model.StartDate.Value;
-                conference.EndDate = model.EndDate.Value;
+            conference.Name = model.Name;
+            conference.Description = model.Description;
+            conference.StartDate = model.StartDate.Value;
+            conference.EndDate = model.EndDate.Value;
 
-                _repository.Save(new Conference(conference));
+            _repository.Save(new Conference(conference));
 
-                return RedirectToAction("Details", new {model.Id});
-            }
-
-            return View(model);
+            return RedirectToAction("Details", new {model.Id});
         }
 
         [HttpGet]

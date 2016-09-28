@@ -15,6 +15,8 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             FluentValidationModelValidatorProvider.Configure(provider =>
                 provider.ValidatorFactory = container.GetInstance<IValidatorFactory>());
+
+            GlobalFilters.Filters.Add(new ValidatorActionFilter());
         }
     }
 }

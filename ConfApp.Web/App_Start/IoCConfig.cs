@@ -27,7 +27,7 @@ namespace ConfApp.Web
             // Command Router, Resolver and Handlers
             container.Register<ICommandRouter, CommandRouter>();
             container.Register<ICommandHandlerResolver, SimpleInjectorCommandHandlerResolver>();
-            container.Register<CommandHandler<CreateConference, Guid>, CreateConfereceHandler>();
+            container.Register<ICommandHandler<CreateConference, Guid>, CreateConfereceHandler>();
 
             // Repositories and Data Access Registrations
             container.Register<IReadContext, ReadContext>(Lifestyle.Singleton);

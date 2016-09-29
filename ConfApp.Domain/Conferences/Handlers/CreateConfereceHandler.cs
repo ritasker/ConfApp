@@ -5,9 +5,9 @@ using ConfApp.Domain.Infrastructure;
 
 namespace ConfApp.Domain.Conferences.Handlers
 {
-    public class CreateConfereceHandler : CommandHandler<CreateConference, Guid>
+    public class CreateConfereceHandler : ICommandHandler<CreateConference, Guid>
     {
-        public override Guid Handle(CreateConference command)
+        public Guid Handle(CreateConference command)
         {
             var id = Guid.NewGuid();
             using (var connection =

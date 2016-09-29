@@ -2,6 +2,6 @@
 {
     public interface ICommandHandlerResolver
     {
-        CommandHandler<ICommand<TResult>, TResult> ResolveForCommand<TResult>(ICommand<TResult> command);
+        CommandHandler<TResult> ResolveForCommand<TResult>(ICommand<TResult> command);
     }
 }

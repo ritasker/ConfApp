@@ -1,4 +1,5 @@
-﻿using ConfApp.Domain.Infrastructure;
+﻿using System;
+using ConfApp.Domain.Infrastructure;
 using SimpleInjector;
 
 namespace ConfApp.Web
@@ -12,10 +13,13 @@ namespace ConfApp.Web
             _container = container;
         }
 
-        public CommandHandler<ICommand<TResult>, TResult> ResolveForCommand<TResult>(ICommand<TResult> command)
+        public CommandHandler<TResult> ResolveForCommand<TResult>(ICommand<TResult> command)
         {
-            var handlerType = typeof(CommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
-            return (CommandHandler<ICommand<TResult>, TResult>) _container.GetInstance(handlerType);
+            var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
+            var wrapperType = typeof(CommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
+            var handler = _container.GetInstance(handlerType);
+            var wrapperHandler = Activator.CreateInstance(wrapperType, handler);
+            return (CommandHandler<TResult>) wrapperHandler;
         }
     }
 }

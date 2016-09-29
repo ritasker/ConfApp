@@ -66,6 +66,8 @@
     <Compile Include="Data\IConferenceRepository.cs" />
     <Compile Include="Data\ISqlCommand.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
+    <Compile Include="Infrastructure\ICommandHandler.cs" />
+    <Compile Include="Infrastructure\Unit.cs" />
     <Compile Include="IReadContext.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\CommandHandler.cs" />

@@ -1,11 +1,8 @@
-﻿using SimpleInjector;
-
-namespace ConfApp.Domain.Infrastructure
+﻿namespace ConfApp.Domain.Infrastructure
 {
     public class CommandRouter : ICommandRouter
     {
         private readonly ICommandHandlerResolver _commandHandlerResolver;
-        private readonly Container _container;
 
         public CommandRouter(ICommandHandlerResolver commandHandlerResolver)
         {

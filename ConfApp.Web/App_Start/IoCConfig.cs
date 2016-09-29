@@ -1,7 +1,9 @@
-﻿using ConfApp.Data;
+﻿using System;
+using ConfApp.Data;
 using ConfApp.Data.Repositories;
 using ConfApp.Domain;
 using ConfApp.Domain.Conferences.Commands;
+using ConfApp.Domain.Conferences.Handlers;
 using ConfApp.Domain.Data;
 using ConfApp.Domain.Infrastructure;
 
@@ -25,6 +27,7 @@ namespace ConfApp.Web
             // Command Router, Resolver and Handlers
             container.Register<ICommandRouter, CommandRouter>();
             container.Register<ICommandHandlerResolver, SimpleInjectorCommandHandlerResolver>();
+            container.Register<CommandHandler<CreateConference, Guid>, CreateConfereceHandler>();
 
             // Repositories and Data Access Registrations
             container.Register<IReadContext, ReadContext>(Lifestyle.Singleton);

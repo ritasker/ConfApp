@@ -64,24 +64,6 @@ namespace ConfApp.Tests.Controller
         }
 
         [Fact]
-        public void Create_ShouldReturnAViewIfTheModelIsInvalid()
-        {
-            // ARRANGE
-            var model = new CreateConference();
-            var repository = A.Fake<IConferenceRepository>();
-            var subject = new ConferencesController(repository, null);
-            subject.ModelState.AddModelError("aProp", "Something is wrong");
-
-            // ACT
-            var result = subject.Create(model);
-
-            // ASSERT
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-        }
-
-        [Fact]
         public void Create_ShouldSaveTheConference()
         {
             // ARRANGE
@@ -165,25 +147,6 @@ namespace ConfApp.Tests.Controller
 
             var notFoundResult = result as HttpNotFoundResult;
             notFoundResult.StatusDescription.Should().Be(entityNotFoundException.Message);
-        }
-
-        [Fact]
-        public void Edit_ShouldReturnAViewIfTheModelIsInvalid()
-        {
-            // ARRANGE
-            var model = new EditConference();
-            var repository = A.Fake<IConferenceRepository>();
-            var subject = new ConferencesController(repository, null);
-            subject.ModelState.AddModelError("aProp", "Something is wrong");
-
-            // ACT
-            var result = subject.Edit(model);
-
-            // ASSERT
-            A.CallTo(() => repository.FindById(model.Id)).MustHaveHappened(Repeated.Never);
-            A.CallTo(() => repository.Save(A<Conference>.Ignored)).MustHaveHappened(Repeated.Never);
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
         }
 
         [Fact]

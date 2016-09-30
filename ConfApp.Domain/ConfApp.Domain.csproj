@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,7 +68,6 @@
     <Compile Include="Data\ISqlCommand.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Infrastructure\ICommandHandler.cs" />
-    <Compile Include="Infrastructure\Unit.cs" />
     <Compile Include="IReadContext.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\CommandHandler.cs" />

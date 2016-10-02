@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using ConfApp.Domain.Data;
 using Dapper;
 
@@ -21,14 +22,28 @@ namespace ConfApp.Domain.Conferences.SqlCommands
 
         public void Execute(IDbConnection connection)
         {
-            connection.Execute(_sql, new
+            connection.Open();
+            var transaction = connection.BeginTransaction();
+
+            try
             {
-                Id = _id,
-                Name = _name,
-                Description = _description,
-                StartDate = _startDate,
-                EndDate = _endDate
-            });
+                connection.Execute(_sql, new
+                {
+                    Id = _id,
+                    Name = _name,
+                    Description = _description,
+                    StartDate = _startDate,
+                    EndDate = _endDate
+                }, transaction);
+                transaction.Commit();
+
+            }
+            catch (SqlException)
+            {
+                transaction.Rollback();
+            }
+
+            
         }
 
         private readonly string _sql;
